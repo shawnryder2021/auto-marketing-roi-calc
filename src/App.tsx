@@ -2,6 +2,7 @@ import React from 'react';
 import { Calculator as CalculatorIcon, ArrowRight } from 'lucide-react';
 import Calculator from './components/Calculator';
 import FAQ from './components/FAQ';
+import MarketingGuide from './components/MarketingGuide';
 import CTAPopup from './components/CTAPopup';
 
 function App() {
@@ -62,6 +63,9 @@ function App() {
 
         {/* FAQ Component */}
         <FAQ />
+
+        {/* Educational Section */}
+        <MarketingGuide />
 
         {/* Bottom CTA */}
         <div className="bg-blue-50 rounded-xl p-8 text-center mt-16">
