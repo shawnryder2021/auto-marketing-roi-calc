@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calculator, DollarSign, Percent, Users, Car, TrendingUp, Download } from 'lucide-react';
+import { DollarSign, Percent, Users, Car, Download } from 'lucide-react';
 import { Chart } from './Chart';
 import { Tips } from './Tips';
 
@@ -25,6 +25,15 @@ export default function ROICalculator() {
   const [history, setHistory] = useState<HistoricalData[]>([]);
   const [showTips, setShowTips] = useState(false);
 
+  const calculateROI = React.useCallback(() => {
+    const revenue = (data.numberOfLeads * (data.conversionRate / 100)) * data.averageLeadValue;
+    const roi = ((revenue - data.monthlyBudget) / data.monthlyBudget) * 100;
+    const costPerLead = data.monthlyBudget / data.numberOfLeads;
+    const projectedAnnualRevenue = revenue * 12;
+    const monthlyProfit = revenue - data.monthlyBudget;
+    return { revenue, roi, costPerLead, projectedAnnualRevenue, monthlyProfit };
+  }, [data]);
+
   useEffect(() => {
     const result = calculateROI();
     const newEntry = {
@@ -32,16 +41,7 @@ export default function ROICalculator() {
       roi: result.roi
     };
     setHistory(prev => [...prev, newEntry].slice(-6)); // Keep last 6 months
-  }, [data]);
-
-  const calculateROI = () => {
-    const revenue = (data.numberOfLeads * (data.conversionRate / 100)) * data.averageLeadValue;
-    const roi = ((revenue - data.monthlyBudget) / data.monthlyBudget) * 100;
-    const costPerLead = data.monthlyBudget / data.numberOfLeads;
-    const projectedAnnualRevenue = revenue * 12;
-    const monthlyProfit = revenue - data.monthlyBudget;
-    return { revenue, roi, costPerLead, projectedAnnualRevenue, monthlyProfit };
-  };
+  }, [calculateROI]);
 
   const { revenue, roi, costPerLead, projectedAnnualRevenue, monthlyProfit } = calculateROI();
 
